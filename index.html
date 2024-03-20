@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: rgb(88, 127, 86);
+        overflow: hidden;
+      }
+      .gateBox {
+        width: 300px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: white;
+      }
+      .gateBox .questionBox {
+        display: flex;
+        justify-content: center;
+        border: 1px solid white;
+        padding: 20px;
+      }
+      .gateBox .answerBox {
+        display: flex;
+        justify-content: space-evenly;
+        border: 1px solid white;
+        border-top: none;
+        color: white;
+      }
+
+      .gateBox .answerBox a {
+        color: white;
+        padding: 20px;
+        width: 50%;
+        text-align: center;
+        text-decoration: none;
+        transition: all .3s ease-out;
+      }
+
+      .gateBox .answerBox a:hover {
+        background-color: white;
+        color: black;
+
+        .cursorItem .circle {
+            background-color: white;
+        }
+      }
+
+      .gateBox .line {
+        border: 1px solid white;
+      }
+
+      .cursorItem {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+        pointer-events: none;
+      }
+
+      .cursorItem .circle {
+        position: fixed;
+        background-color: rgb(251, 255, 40);
+        opacity: 0.3;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: -50px -50px;
+        transition: all .5s ease-in-out;
+      }
+    </style>
+    <script>
+      window.onload = () => {
+        let cursorItem = document.querySelector(".cursorItem");
+        let circle = document.querySelector(".circle");
+        let allAnswerButton = document.querySelectorAll('a');
+        let x = 0,
+          y = 0;
+        let targetX = 0,
+          targetY = 0;
+        let speed = 0.09;
+
+        window.addEventListener("mousemove", (ev) => {
+          x = ev.pageX;
+          y = ev.pageY;
+        });
+
+        const loop = () => {
+          targetX += (x - targetX) * speed;
+          targetY += (y - targetY) * speed;
+
+          cursorItem.style.transform = `translate(${targetX}px, ${targetY}px)`;
+          window.requestAnimationFrame(loop);
+        };
+
+        loop();
+
+        allAnswerButton.forEach((answerButton) => {
+            answerButton.addEventListener('mouseenter', () => {
+                circle.style.transform = "scale(.5)";
+            })
+            answerButton.addEventListener('mouseout', () => {
+                circle.style.transform = "scale(1)";
+
+            })
+        })
+      };
+    </script>
+  </head>
+  <body>
+    <div class="cursorItem">
+      <span class="circle"></span>
+    </div>
+    <div class="gateBox">
+      <div class="questionBox">
+        <p>Should i wear a mask?</p>
+      </div>
+      <div class="answerBox">
+        <a class="yes" href="#yes">Yes</a>
+        <span class="line"></span>
+        <a class="no" href="#no">No</a>
+      </div>
+    </div>
+  </body>
+</html>
